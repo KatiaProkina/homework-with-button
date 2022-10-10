@@ -1,23 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import MyButton from "./Components/MyButton";
+import MyInput from "./Components/MyInput";
+import MyWords from "./Components/MyWords";
 
 function App() {
+   
+  const [value,setValue] = useState('')
+
+  const [letters,setLetters] = useState([
+
+  ])
+
+  const [result,setResult] = useState('')
+
+ 
+  const onChange = (e)=>{
+    setValue(e.target.value)
+    setLetters([])
+    setResult('')
+  }
+
+  const addLetter = (e)=>{
+    e.preventDefault()
+    if(value.length<=letters.length){
+      return
+    }
+
+    const newLetter = {
+      id: Date.now(),
+      value: value[letters.length]
+    }
+
+    setLetters([...letters,newLetter])
+    
+  }
+
+  const addResult = (word)=>{
+    if(letters.length === result.length){
+      return
+    }
+    setResult(result+word)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <MyInput
+     type = 'text'
+     value = {value}
+     onChange = {onChange}
+     />
+     <MyWords addResult = {addResult} letters={letters}/>
+
+     <MyButton onClick = {addLetter}> Добавить букву </MyButton>
+
+     <h2>Результат: {result}</h2>
+
     </div>
   );
 }
